@@ -1,4 +1,10 @@
 FROM frolvlad/alpine-oraclejdk8:slim
 WORKDIR /app/sources
 COPY / /app/sources
+COPY .gradle /app/sources
 RUN ./gradlew build --stacktrace
+RUN ls -la build
+RUN mv build/libs/example*.jar /app.jar
+RUN rm -rf /app/sources
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app.jar"]
